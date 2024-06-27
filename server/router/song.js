@@ -5,6 +5,7 @@ const { v2: cloudinary } = require('cloudinary');
 const multer = require('multer');
 const Song = require("../models/songs");
 const auth = require("../middleware/authMiddle");
+require('dotenv').config();
 
 
 // Multer configuration
@@ -15,8 +16,8 @@ const upload = multer({ storage });
  // Configuration
  cloudinary.config({ 
     cloud_name: 'dom13qzxw', 
-    api_key: '685273119724126', 
-    api_secret: `bBsb3pNEiNaWsojP216fMAACHgo` // Click 'View Credentials' below to copy your API secret
+    api_key: `${process.env.CLOUD_API_KEY}`, 
+    api_secret: `${process.env.CLOUD_API}` // Click 'View Credentials' below to copy your API secret
 });
 
 
@@ -41,7 +42,7 @@ songRouter.post('/upload', upload.single('song'), async (req, res) => {
         let song = new Song({
            name : "pemwanthi",
            songUrl : songUrl,
-           imageUrl : 'https://res.cloudinary.com/dom13qzxw/image/upload/v1719317124/uploads/ws7dcxzq27b7id8pxefm.jpg',
+           imageUrl : `${process.env.IMG_URL}`,
             
         })
 
@@ -56,9 +57,7 @@ songRouter.post('/upload', upload.single('song'), async (req, res) => {
       }
       
     });   
-    //     // Respond with the URL of the uploaded image
-    //     res.status(200).json({ url: result.secure_url });
-    //   });
+
     } catch (err) {
       console.error('Server error:', err);
       res.status(500).json({ error: 'Server error' });
